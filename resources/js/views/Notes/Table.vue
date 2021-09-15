@@ -24,7 +24,11 @@
           <td>
             <router-link
               :to="{ name: 'notes.edit', params: { noteSlug: note.slug } }"
-            >Edit</router-link>
+              >Edit</router-link
+            >
+          </td>
+          <td>
+            <delete-note :endpoint="note.slug" />
           </td>
         </tr>
       </tbody>
@@ -33,7 +37,9 @@
 </template>
 
 <script>
+import DeleteNote from "./Delete";
 export default {
+  components: { DeleteNote },
   data() {
     return {
       notes: [],
@@ -43,7 +49,6 @@ export default {
   mounted() {
     axios.get("/api/notes").then((response) => {
       this.notes = response.data.data;
-      console.log(response.data.data);
     });
   },
 };

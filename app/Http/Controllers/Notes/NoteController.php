@@ -23,6 +23,7 @@ class NoteController extends Controller
 
     public function store()
     {
+        sleep(1);
         request()->validate([
             'subject' => 'required',
             'title' => 'required',
@@ -43,5 +44,33 @@ class NoteController extends Controller
             'message' => 'Your Note Was Created',
             'note' => $note
         ]);
+    }
+
+    public function update(Note $note)
+    {
+        request()->validate([
+            'subject' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+        // imput relasi
+        $subject = Subject::findOrFail(request('subject'));
+        $note->update([
+            'subject_id' => $subject->id,
+            'title' => request('title'),
+            'description' => request('description'),
+        ]);
+        return response()->json([
+            'message' => 'Your Note Was Updated',
+            'note' => $note
+        ]);
+    }
+
+    public function destroy(Note $note)
+    {
+        $note->delete();
+        return response()->json([
+            'message' => 'Your Note Was Deleted!'
+        ], 200);
     }
 }
